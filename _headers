@@ -1,0 +1,31 @@
+# Aturan cache untuk Cloudflare Pages.
+# Berkas beralamat sidik jari (assets/*.js, *.css, font) aman disimpan lama;
+# index.html dan service worker harus selalu segar agar pembaruan cepat sampai.
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/sfx/*
+  Cache-Control: public, max-age=604800
+
+/sw.js
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; media-src 'self' blob: https://everyayah.com; connect-src 'self' https://everyayah.com; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Permissions-Policy: microphone=(self), camera=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# Catatan: style-src memerlukan 'unsafe-inline' karena React menulis gaya lewat
+# atribut style pada elemen (mis. lebar bilah kemajuan dan warna blok Tikrar).
+# script-src tetap 'self' tanpa kelonggaran apa pun, sehingga skrip sisipan ditolak.
